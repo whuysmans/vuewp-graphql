@@ -1,5 +1,5 @@
 # graphql-wp
-A GraphQL endpoint for WordPress
+A GraphQL endpoint for WordPress.
 Forked from Tim Field for my [vuewp](https://github.com/whuysmans/vuewp) project.
 
 You can find the original repo here: [graphql-wp](https://github.com/tim-field/graphql-wp).
