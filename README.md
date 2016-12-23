@@ -7,7 +7,7 @@ You can find the original repo here: [graphql-wp](https://github.com/tim-field/g
 These are the changes I made:
 
 ### Added a Yoast type
-In order to retrieve SEO-data with the graphql responses, there is a dedicated type for SEO. In WPQuery the type is included in the response. There is a curl-call at avery route change, and the Yoast html output is captured and parsed for seo-attributes and values. TODO: cache the yoast output and invalidate on options saved.
+In order to retrieve SEO-data with the graphql responses, there is a dedicated type for SEO. In WPQuery the type is included in the response. There is a curl-call at avery route change, and the Yoast html output is captured and parsed for seo-attributes and values. TODO: find a better way to provide yoast meta, maybe server-side rendering?
 
 ### Added a count result for pagination
 A 'count' result is returned with every response, like the 'X-WP-Total' header in the WP Rest Api. To get the number of posts in each response, the 'get_posts' method in WPQuery had to be replaced by WPQuery.
