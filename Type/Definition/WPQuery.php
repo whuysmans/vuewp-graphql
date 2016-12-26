@@ -31,7 +31,7 @@ class WPQuery extends WPObjectType {
     }
 
     //CI helper method for parsing html for yoast attrs
-    static function cipt_parse_YoastSEO_html($html) {
+    static function cipt_parse_YoastSEO_html( $html ) {
       $html = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' . $html;
       $answer = array();
 
@@ -144,13 +144,19 @@ class WPQuery extends WPObjectType {
                     $response = curl_exec($curl);
                     curl_close($curl);
                     $yoast_head_meta = static::cipt_parse_YoastSEO_html($response);
-
                     $resultArray = [];
                     foreach( $yoast_head_meta as $k => $v ) {
                         $key = str_replace(':', '_', $k);
                         $resultArray[$key] = $v;
                     }
                     return $resultArray;
+                }
+            ],
+            'header_image' => [
+                'type' => Type::string(),
+                'description' => 'header image url',
+                'resolve' => function($root) {
+                    return get_header_image();
                 }
             ],
             'terms' => [

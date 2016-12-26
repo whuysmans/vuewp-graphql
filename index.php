@@ -75,7 +75,7 @@ Router::routes([
                     ]
                 ];
             }
-            //write_log($result);
+            //write_log(json_encode($result));
             jsonResponse($result);
         }
         jsonResponse(['errors' => ['message' => 'Wrong query format or empty query. Either send raw query _with_ Content-Type: \'application/json\' header or send query by posting www-form-data with a query="query{}..." parameter']]);
