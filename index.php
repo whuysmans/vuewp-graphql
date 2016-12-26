@@ -1,19 +1,20 @@
 <?php
 /**
-* Plugin Name: WordPress GraphQL
-* Plugin URI: http://www.mohiohio.com/
-* Description: GraphQL for WordPress
+* Plugin Name: WordPress Simplified GraphQL
+* Plugin URI: http://www.conimpeto.be/
+* Description: GraphQL for WordPress, forked from Tim Field and simplified for Con Impeto
 * Version: 0.3.0
-* Author: Tim Field
-* Author URI: http://www.mohiohio.com/
+* Author: Werner Huysmans
+* Author URI: http://conimpeto.be/
 * License: GPL-3
 */
-namespace Mohiohio\GraphQLWP;
+namespace CI\GraphQLWP;
 
-require_once __DIR__ . "/../../../vendor/autoload.php";
+require_once __DIR__ . "/Lib/autoload.php";
 
 use GraphQL\GraphQL;
 use Mohiohio\WordPress\Router;
+use CI\GraphQLWP\Schema;
 
 const ENDPOINT = '/graphql/';
 

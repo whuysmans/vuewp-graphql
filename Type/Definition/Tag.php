@@ -1,8 +1,8 @@
 <?php
 
-namespace Mohiohio\GraphQLWP\Type\Definition;
+namespace CI\GraphQLWP\Type\Definition;
 
-use Mohiohio\GraphQLWP\Schema;
+use \CI\GraphQLWP\Schema;
 
 //TODO should extend abstract tag taxonomy / term type which enforces getTaxonomy method
 class Tag extends WPObjectType {

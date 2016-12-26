@@ -1,6 +1,6 @@
 <?php
 
-namespace Mohiohio\GraphQLWP\Type\Definition;
+namespace CI\GraphQLWP\Type\Definition;
 
 use \GraphQL\Type\Definition\Type;
 use \GraphQL\Type\Definition\ListOfType;
@@ -17,27 +17,7 @@ class Query extends WPObjectType {
                     global $wp_query;
                     return $wp_query;
                 }
-            ],
-            'wp_post' => [
-                'type' => static::getPostInterfaceType(),
-                'args' => static::getQueryArgsPost(),
-                'resolve' => function($root, $args) {
-                    return (static::getPostInterfaceType())::resolve($root, $args);
-                }
-            ],
-            'term' => [
-                'type' => static::getTermInterfaceType(),
-                'args' => [
-                    'id' => [
-                        'type' => Type::string(),
-                        'desciption' => 'Term id'
-                    ]
-                ],
-                'resolve' => function($root, $args) {
-                    return get_term($args['id']);
-                }
-            ],
-            'node' => static::getNodeDefinition()['nodeField']
+            ]
         ];
     }
 }

@@ -1,13 +1,10 @@
 # graphql-wp
-A GraphQL endpoint for WordPress.
+A simplified GraphQL endpoint for WordPress.
 Forked from Tim Field for my [vuewp](https://github.com/whuysmans/vuewp) project.
 
 You can find the original repo here: [graphql-wp](https://github.com/tim-field/graphql-wp).
 
-These are the changes I made:
-
-### Added a Yoast type
-In order to retrieve SEO-data with the graphql responses, there is a dedicated type for SEO. In WPQuery the type is included in the response. There is a curl-call at avery route change, and the Yoast html output is captured and parsed for seo-attributes and values. UPDATE: This definitely has to be changed: in the current implementation, yoast data is async. I don't know much about seo, but I assume the data will arrive too late this way. SSR is probably the way to go...
+Here are some changes I made:
 
 ### Added a count result for pagination
 A 'count' result is returned with every response, like the 'X-WP-Total' header in the WP Rest Api. To get the number of posts in each response, the 'get_posts' method in WPQuery had to be replaced by WPQuery->query.

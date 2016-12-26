@@ -1,0 +1,21 @@
+{
+    "name": "mohiohio/wordpress-lib",
+    "type": "library",
+    "description": "WordPress Utilities",
+    "keywords": ["wordpress","library","php"],
+    "homepage": "http://www.mohiohio.com",
+    "license": "GPLv3",
+    "authors": [
+            {
+                "name": "Tim Field",
+                "email": "field.tim@gmail.com",
+                "role": "Developer"
+            }
+    ],
+    "require": {
+        "php": ">=5.5.0"
+    },
+    "autoload": {
+        "psr-4": {"Mohiohio\\WordPress\\": "src/"}
+    }
+}

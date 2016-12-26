@@ -1,10 +1,10 @@
 <?php
 
-namespace Mohiohio\GraphQLWP\Type\Definition;
+namespace CI\GraphQLWP\Type\Definition;
 
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\ListOfType;
-use Mohiohio\GraphQLWP\Schema;
+use CI\GraphQLWP\Schema;
 
 class WPQuery extends WPObjectType {
 
@@ -18,40 +18,6 @@ class WPQuery extends WPObjectType {
 
     static function getDescription() {
         return 'deals with the intricacies of a post request on a WordPress blog';
-    }
-
-    static function write_log ( $log ) {
-        if ( true === WP_DEBUG ) {
-            if ( is_array( $log ) || is_object( $log ) ) {
-                error_log( print_r( $log, true ) );
-            } else {
-                error_log( $log );
-            }
-        }
-    }
-
-    //CI helper method for parsing html for yoast attrs
-    static function cipt_parse_YoastSEO_html( $html ) {
-      $html = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' . $html;
-      $answer = array();
-
-      $dom = new \DOMDocument(null, 'UTF-8');
-      libxml_use_internal_errors(true);
-      $dom->loadHTML($html);
-
-      $seo_title = $dom->getElementsByTagName('title')[0];
-      $answer['title'] = $seo_title->nodeValue;
-
-      $meta_lines = $dom->getElementsByTagName('meta');
-      foreach( $meta_lines as $meta_line ) {
-        $key = $meta_line->getAttribute('property');
-        if( !isset($key) || ( $key === '' ))
-          $key = $meta_line->getAttribute('name');
-        $val = $meta_line->getAttribute('content');
-        if( isset($key) && $key !== '' )
-          $answer[$key] = $val;
-      }
-      return $answer;
     }
 
     static function getFieldSchema() {
@@ -125,33 +91,6 @@ class WPQuery extends WPObjectType {
                     return $result;
                 }
             ],
-            //CI yoast type added for seo data
-            'yoast' => [
-                'type' => Yoast::getInstance(),
-                'description' => 'yoast html for seo',
-                'args' => [
-                    'url' => [
-                        'type' => Type::string()
-                    ]
-                ],
-                'resolve' => function($root, $args) {
-                    $curl = curl_init();
-                    curl_setopt_array($curl, array(
-                            CURLOPT_RETURNTRANSFER => 1,
-                            CURLOPT_URL => esc_url($args['url'])
-                        )   
-                    );
-                    $response = curl_exec($curl);
-                    curl_close($curl);
-                    $yoast_head_meta = static::cipt_parse_YoastSEO_html($response);
-                    $resultArray = [];
-                    foreach( $yoast_head_meta as $k => $v ) {
-                        $key = str_replace(':', '_', $k);
-                        $resultArray[$key] = $v;
-                    }
-                    return $resultArray;
-                }
-            ],
             'header_image' => [
                 'type' => Type::string(),
                 'description' => 'header image url',
@@ -180,83 +119,6 @@ class WPQuery extends WPObjectType {
                 }
             ],
         ];
-
-        if(Schema::withWooCommerce()) {
-
-            $schema['products'] = [
-                'type' => new ListOfType(Product::getInstance()),
-                'args' => static::extendArgs([
-                    'post_type' => [
-                        'description' => "Retrieves posts by Post Types, default value is 'product'.",
-                        'type' => new ListOfType(Type::string()),
-                    ],
-                    'category_name' => [
-                        'description' => "Show in this product category slug",
-                        'type' => Type::string()
-                    ]
-                ]),
-                'resolve' => function($root, $args) {
-
-                    if(!isset($args['post_type'])) {
-                        $args['post_type'] = 'product';
-                    }
-
-                    if(isset($args['category_name'])){
-                        $args['tax_query'] = [
-                            [
-                                'taxonomy' => 'product_cat',
-                                'field' => 'slug',
-                                'terms' => $args['category_name']
-                            ]
-                        ];
-                        unset($args['category_name']);
-                    }
-
-                    return get_posts($args);
-                }
-            ];
-
-            $schema['orders'] = [
-                'type' => new ListOfType(Order::getInstance()),
-                'args' => static::extendArgs([
-                    'post_type' => [
-                        'description' => "Retrieves posts by Post Types, default value is 'shop_order'.",
-                        'type' => new ListOfType(Type::string()),
-                    ],
-                    'order_status' => [
-                        'description' => "Status of the order, see wc_get_order_statuses()",
-                        'type' => new ListOfType(Type::string()),
-                    ]
-                ]),
-                'resolve' => function($root, $args) {
-
-                    if(!is_user_logged_in()){
-                        return [];
-                    }
-
-                    if(!isset($args['post_type'])) {
-                        $args['post_type'] = 'shop_order';
-                    }
-
-                    if(isset($args['order_status'])) {
-                        $args['post_status'] = 'wc-'.$args['order_status'];
-                    }
-
-                    if(!isset($args['post_status'])) {
-                        $args['post_status'] = 'any';
-                    }
-
-                    //if(!is_super_admin()){ //TODO
-                    $args['meta_query'][] = [
-                        'key' => '_customer_user',
-                        'value' => get_current_user_id(),
-                    ];
-                    //}
-
-                    return get_posts($args);
-                }
-            ];
-        }
 
         return $schema;
     }

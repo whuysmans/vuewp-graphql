@@ -1,13 +1,13 @@
 <?php
-namespace Mohiohio\GraphQLWP;
+namespace CI\GraphQLWP;
 
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use GraphQLRelay\Relay;
 
-use Mohiohio\GraphQLWP\Type\Definition\WPQuery;
-use Mohiohio\GraphQLWP\Type\Definition\WPPost;
-use Mohiohio\GraphQLWP\Type\Definition\WPTerm;
+use CI\GraphQLWP\Type\Definition\WPQuery;
+use CI\GraphQLWP\Type\Definition\WPPost;
+use CI\GraphQLWP\Type\Definition\WPTerm;
 
 class Schema
 {
@@ -25,9 +25,6 @@ class Schema
         do_action('graphql-wp/schema_init');
     }
 
-    static function withWooCommerce() {
-        return (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins',get_option( 'active_plugins' ))));
-    }
 
     static function getNodeDefinition() {
 
@@ -71,46 +68,7 @@ class Schema
                         global $wp_query;
                         return $wp_query;
                     }
-                ],
-                'wp_post' => [
-                    'type' => WPPost::getInstance(),
-                    'args' => [
-                        'ID' => [
-                            'name' => 'ID',
-                            'description' => 'id of the post',
-                            'type' => Type::int()
-                        ],
-                        'slug' => [
-                            'name' => 'slug',
-                            'description' => 'name of the post',
-                            'type' => Type::string()
-                        ],
-                        'post_type' => [
-                            'name' => 'post_type',
-                            'description' => 'type of the post',
-                            'type' => Type::string()
-                        ]
-                    ],
-                    'resolve' =>  function ($root, $args) {
-                        if(isset($args['ID'])){
-                            return get_post($args['ID']);
-                        }
-                        return get_page_by_path( $args['slug'], \OBJECT, isset($args['post_type']) ? $args['post_type'] : WPPost::DEFAULT_TYPE );
-                    }
-                ],
-                'term' => [
-                    'type' => WPTerm::getInstance(),
-                    'args' => [
-                        'id' => [
-                            'type' => Type::string(),
-                            'desciption' => 'Term id'
-                        ]
-                    ],
-                    'resolve' => function($root, $args) {
-                        return get_term($args['id']);
-                    }
-                ],
-                'node' => static::getNodeDefinition()['nodeField']
+                ]
             ]
         ]);
 

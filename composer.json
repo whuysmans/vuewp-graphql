@@ -1,14 +1,17 @@
 {
-    "name": "mohiohio/graphql-wp",
-    "description": "A GraphQL endpoint for WordPress",
+    "name": "ci/graphql-wp",
+    "description": "A simplified GraphQL endpoint for WordPress",
     "type" : "wordpress-plugin",
     "license": "GPL",
     "authors": [
         {
-            "name": "Tim Field",
-            "email": "field.tim@gmail.com"
+            "name": "Werner Huysmans",
+            "email": "werner.huysmans@gmail.com"
         }
     ],
+    "config": {
+        "vendor-dir": "Lib"
+    },
     "require": {
         "php": ">=5.6",
         "mohiohio/wordpress-lib":"^0.1",
@@ -18,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Mohiohio\\GraphQLWP\\":"/"
+            "CI\\GraphQLWP\\":""
         }
     },
     "require-dev": {

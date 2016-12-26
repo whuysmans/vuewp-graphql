@@ -1,6 +1,6 @@
 <?php
 
-namespace Mohiohio\GraphQLWP\Type\Definition;
+namespace CI\GraphQLWP\Type\Definition;
 
 use function Stringy\create as s;
 

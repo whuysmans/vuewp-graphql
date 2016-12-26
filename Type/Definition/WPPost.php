@@ -1,6 +1,6 @@
 <?php
 
-namespace Mohiohio\GraphQLWP\Type\Definition;
+namespace CI\GraphQLWP\Type\Definition;
 
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\ListOfType;
@@ -44,9 +44,7 @@ class WPPost extends WPInterfaceType {
             self::$internalTypes = apply_filters('graphql-wp/get_post_types',[ //TODO move to parent
                 Post::getPostType() => new Post(),
                 Page::getPostType() => new Page(),
-                Attachment::getPostType() => new Attachment(),
-                Product::getPostType() => new Product(),
-                Order::getPostType() => new Order()
+                Attachment::getPostType() => new Attachment()
             ]);
         }
         return $name ? self::$internalTypes[$name] : self::$internalTypes;
