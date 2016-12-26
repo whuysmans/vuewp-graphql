@@ -265,6 +265,9 @@ class WPPost extends WPInterfaceType {
             'acf' => [
                 'type' => new ListOfType( new ListOfType( Type::string() ) ),
                 'resolve' => function($post, $args) {
+                    if( !get_post_custom_keys( $post->ID ) ) {
+                        return [];
+                    }
                     $keys = array_filter( get_post_custom_keys( $post->ID ), 
                         function( $key ) { return ( strpos( $key, '_' ) !== 0 ) && 
                                                   ( !stristr( $key, 'standard' ) ); 
