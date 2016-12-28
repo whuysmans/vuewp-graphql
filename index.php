@@ -26,6 +26,7 @@ Router::routes([
         //CI: allowed type access-control-allow-origin added, to prevent cors errors (see also 'credentials false' on lokka client)
         header('Access-Control-Allow-Headers: content-type, Access-Control-Allow-Origin');
         header('Content-Type: application/json');
+        header('Access-Control-Max-Age: 1728000');
 
 
         $contentTypeIsJson = (isset($_SERVER['HTTP_CONTENT_TYPE']) && $_SERVER['HTTP_CONTENT_TYPE'] == 'application/json')
