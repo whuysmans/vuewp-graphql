@@ -111,6 +111,31 @@ class WPQuery extends WPObjectType {
                     return get_terms($taxonomies, $args);
                 }
             ],
+            'seo' => [
+                'type' => Type::string(),
+                'description' => 'Get seo metadata for given url',
+                'args' => [
+                    'seoType' => [ 'type' => Type::string() ],
+                    'seoIdentifier' => [ 'type' => Type::string() ]
+                ],
+                'resolve' => function( $root, $args ) {
+                    $result = "";
+                    switch( $args['seoType'] ) {
+                        case 'single':
+                            $result = get_post_meta( $args['seoIdentifier', 'wpseo_prefetch', true );
+                            break;
+                        case 'category':
+                            $result = get_option( 'wpseo_prefetch_category_' . $args['seoIdentifier'] );
+                            break;
+                        case 'tag': 
+                            $result = get_option( 'wpseo_prefetch_post_tag_' . $args['seoIdentifier'] );
+                            break;
+                        default:
+                            $result = get_option( 'wpseo_prefetch_' . $args['seoIdentifier'] );
+                    }
+                    return $result;
+                }
+            ],
             //count result for pagination
             'count' => [
                 'type' => Type::int(),
