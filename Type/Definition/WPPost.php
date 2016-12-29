@@ -314,6 +314,9 @@ class WPPost extends WPInterfaceType {
                 'resolve' => function($post) {
                     $id = $post->post_author;
                     $user = get_user_by( 'ID', $id );
+                    if( !$user ) {
+                        return [];
+                    }
                     static::write_log( $user );
                     return array(
                         'slug' => $user->user_nicename,
