@@ -20,6 +20,16 @@ class WPQuery extends WPObjectType {
         return 'deals with the intricacies of a post request on a WordPress blog';
     }
 
+    static function write_log ( $log ) {
+        if ( true === WP_DEBUG ) {
+            if ( is_array( $log ) || is_object( $log ) ) {
+                error_log( print_r( $log, true ) );
+            } else {
+                error_log( $log );
+            }
+        }
+    }
+
     static function getFieldSchema() {
         $schema = [
             'posts' => [
@@ -73,8 +83,8 @@ class WPQuery extends WPObjectType {
             'author' => [
                 'type' => new ListOfType(WPPost::getInstance()),
                 'args' => static::extendArgs([
-                    'author' => [
-                        'type' => Type::int(),
+                    'author_name' => [
+                        'type' => Type::string(),
                     ]
                 ]),
                 'resolve' => function($root, $args) {
@@ -120,15 +130,21 @@ class WPQuery extends WPObjectType {
                 ],
                 'resolve' => function( $root, $args ) {
                     $result = "";
-                    switch( $args['seoType'] ) {
-                        case 'single':
-                            $result = get_post_meta( $args['seoIdentifier', 'wpseo_prefetch', true );
+                    $seoType = $args['seoType'];
+                    static::write_log($seoType);
+                    switch( $seoType ) {
+                        case "posts":
+                        case "pages":
+                            $result = get_post_meta( intval( $args['seoIdentifier'] ), 'wpseo_prefetch', true );
                             break;
-                        case 'category':
+                        case "categories":
                             $result = get_option( 'wpseo_prefetch_category_' . $args['seoIdentifier'] );
                             break;
-                        case 'tag': 
+                        case "tags": 
                             $result = get_option( 'wpseo_prefetch_post_tag_' . $args['seoIdentifier'] );
+                            break;
+                        case "home":
+                            $result = get_option( 'wpseo_prefetch_post' );
                             break;
                         default:
                             $result = get_option( 'wpseo_prefetch_' . $args['seoIdentifier'] );
@@ -162,6 +178,10 @@ class WPQuery extends WPObjectType {
             'author' => [
                 'description' => 'author of this set of posts',
                 'type' => Type::int()
+            ],
+            'author_name' => [
+                'description' => 'author_slug for this set of posts',
+                'type' => Type::string()
             ],
             'paged' => [
                 'description' => 'number of page.',

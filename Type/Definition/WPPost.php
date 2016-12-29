@@ -311,21 +311,14 @@ class WPPost extends WPInterfaceType {
             ],
             'author' => [
                 'type' => Author::getInstance(),
-                'args' => [
-                    'field' => [
-                        'description' => 'Selects the field of the users record',
-                        'type' => Type::string(),
-                    ],
-                    'user_id' => [
-                        'description' => 'User ID',
-                        'type' => Type::int()
-                    ]
-                ],
-                'resolve' => function($post, $args) {
+                'resolve' => function($post) {
                     $id = $post->post_author;
+                    $user = get_user_by( 'ID', $id );
+                    static::write_log( $user );
                     return array(
-                        'name' => get_the_author_meta( 'display_name', $id ),
-                        'url' => get_the_author_meta( 'user_url', $id ),
+                        'slug' => $user->user_nicename,
+                        'display_name' => $user->display_name,
+                        'url' => $user->user_url,
                         'avatar' => get_avatar( $id ),
                         'id' => $id
                     );

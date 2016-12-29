@@ -15,11 +15,14 @@ class Author extends WPObjectType {
     static function getFieldSchema() {
 
         return [
-            'name' => [
+            'slug' => [
                 'type'=>Type::string()
             ],
+            'display_name' => [
+                'type' => Type::string() 
+            ],
             'url' => [
-                'type'=>Type::string(),
+                'type'=>Type::string()
             ],
             'avatar' => [
                 'type' => Type::string()
