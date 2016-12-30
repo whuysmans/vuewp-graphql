@@ -126,28 +126,20 @@ class WPQuery extends WPObjectType {
                 'description' => 'Get seo metadata for given url',
                 'args' => [
                     'seoType' => [ 'type' => Type::string() ],
-                    'seoIdentifier' => [ 'type' => Type::string() ]
+                    'seoValue' => [ 'type' => Type::string() ]
                 ],
                 'resolve' => function( $root, $args ) {
                     $result = "";
                     $seoType = $args['seoType'];
-                    static::write_log($seoType);
                     switch( $seoType ) {
-                        case "posts":
-                        case "pages":
-                            $result = get_post_meta( intval( $args['seoIdentifier'] ), 'wpseo_prefetch', true );
-                            break;
-                        case "categories":
-                            $result = get_option( 'wpseo_prefetch_category_' . $args['seoIdentifier'] );
-                            break;
-                        case "tags": 
-                            $result = get_option( 'wpseo_prefetch_post_tag_' . $args['seoIdentifier'] );
-                            break;
-                        case "home":
-                            $result = get_option( 'wpseo_prefetch_post' );
-                            break;
-                        default:
-                            $result = get_option( 'wpseo_prefetch_' . $args['seoIdentifier'] );
+                        case "archive":
+                        $result = get_option( 'wpseo_prefetch_' . $args['seoValue'] );
+                        break;
+                        case "terms": 
+                        $result = get_term_meta( $args['seoValue'], 'wpseo_prefetch_' );
+                        break;
+                        case "single":
+                        $result = get_post_meta( $args['seoValue'], 'wpseo_prefetch_', true );
                     }
                     return $result;
                 }
