@@ -279,7 +279,6 @@ class WPPost extends WPInterfaceType {
                             array_push( $acf_result, array( $key, $val ) );
                         }
                     }
-                    static::write_log( $acf_result );
                     return $acf_result;
                 }
             ],
@@ -317,7 +316,6 @@ class WPPost extends WPInterfaceType {
                     if( !$user ) {
                         return [];
                     }
-                    static::write_log( $user );
                     return array(
                         'slug' => $user->user_nicename,
                         'display_name' => $user->display_name,

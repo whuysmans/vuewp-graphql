@@ -126,21 +126,10 @@ class WPQuery extends WPObjectType {
                 'description' => 'Get seo metadata for given url',
                 'args' => [
                     'seoType' => [ 'type' => Type::string() ],
-                    'seoValue' => [ 'type' => Type::string() ]
+                    'seoSlug' => [ 'type' => Type::string() ]
                 ],
                 'resolve' => function( $root, $args ) {
-                    $result = "";
-                    $seoType = $args['seoType'];
-                    switch( $seoType ) {
-                        case "archive":
-                        $result = get_option( 'wpseo_prefetch_' . $args['seoValue'] );
-                        break;
-                        case "terms": 
-                        $result = get_term_meta( $args['seoValue'], 'wpseo_prefetch_' );
-                        break;
-                        case "single":
-                        $result = get_post_meta( $args['seoValue'], 'wpseo_prefetch_', true );
-                    }
+                    $result = cipt_get_wpseo_head_html( $args['seoType'], $args['seoSlug'] );
                     return $result;
                 }
             ],
