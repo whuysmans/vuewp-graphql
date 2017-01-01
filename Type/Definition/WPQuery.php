@@ -108,6 +108,18 @@ class WPQuery extends WPObjectType {
                     return get_header_image();
                 }
             ],
+            'header_video' => [
+                'type' => HeaderVideo::getInstance(),
+                'description' => 'header video url',
+                'resolve' => function( $root ) {
+                    $header_info = get_custom_header(); 
+                    return array(
+                        'url' => get_header_video_url(),
+                        'width' => $header_info->width,
+                        'height' => $header_info->height
+                    );
+                }
+            ],
             'terms' => [
                 'type' => new ListOfType(WPTerm::getInstance()),
                 'description' => 'Retrieve the terms in a given taxonomy or list of taxonomies. ',
