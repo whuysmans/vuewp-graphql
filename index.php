@@ -22,7 +22,7 @@ Router::routes([
 
     ENDPOINT => function() {
 
-        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Origin: http://prutstuin.be');
         //CI: allowed type access-control-allow-origin added, to prevent cors errors (see also 'credentials false' on lokka client)
         header('Access-Control-Allow-Headers: content-type, Access-Control-Allow-Origin');
         header('Content-Type: application/json');

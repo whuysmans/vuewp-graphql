@@ -120,6 +120,25 @@ class WPQuery extends WPObjectType {
                     );
                 }
             ],
+            'comments' => [
+                'type' => new ListOfType(Comment::getInstance()),
+                'description' => 'all comments',
+                'resolve' => function( $root ) {
+                    $comments = get_comments( array(
+                    'avatar_size' => 100,
+                    'style'       => 'ol',
+                    'short_ping'  => true
+                    ) );
+                    $result = array();
+                    foreach( $comments as $comment ) {
+                        $post = get_post( $comment->comment_post_ID );
+                        $comment->comment_post_url = $post->post_name;
+                        $comment->comment_post_title = $post->post_title;
+                        $result[] = $comment;
+                    }
+                    return $result;
+                }
+            ],
             'terms' => [
                 'type' => new ListOfType(WPTerm::getInstance()),
                 'description' => 'Retrieve the terms in a given taxonomy or list of taxonomies. ',
