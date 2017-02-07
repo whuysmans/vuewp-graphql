@@ -12,9 +12,6 @@ A 'count' result is returned with every response, like the 'X-WP-Total' header i
 ### Added acf response
 ACF response was added to WPPost. This still needs some work.
 
-### Solved CORS issue
-I had to add the Acces-Control-Allow-Origin header in the Allow-Headers in index.php. On the client side, at the Lokka GraphQL js client, I had to set credentials to false. Still need to investigate further on this.
-
 ## Requires
 + php >= 5.6
 
